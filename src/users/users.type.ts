@@ -8,3 +8,8 @@ export interface ISignupBody {
   firstName?: string;
   lastName?: string;
 }
+
+export interface ILoginBody {
+  email: string;
+  password: string;
+}
