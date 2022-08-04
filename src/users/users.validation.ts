@@ -58,3 +58,17 @@ export const LoginValidation = () => {
       }),
   });
 };
+
+export const UpdateProfileValidation = () => {
+  return joi.object().keys({
+    username: joi.string().min(3).optional().messages({
+      "string.min": "Your Username Must At Least Contains 3 Character",
+    }),
+    firstName: joi.string().min(3).optional().messages({
+      "string.min": "Your FirstName Must At Least Contain 3 Character",
+    }),
+    lastName: joi.string().min(3).optional().messages({
+      "string.min": "Your LastName Must At Least Contain 3 Character",
+    }),
+  });
+};

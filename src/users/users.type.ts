@@ -13,3 +13,9 @@ export interface ILoginBody {
   email: string;
   password: string;
 }
+
+export interface IUpdateProfileBody {
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+}

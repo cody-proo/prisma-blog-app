@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ExpressRequest } from "../request";
-import { ILoginBody, ISignupBody } from "./users.type";
+import { ILoginBody, ISignupBody, IUpdateProfileBody } from "./users.type";
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import * as jsonwebtoken from "jsonwebtoken";
@@ -69,4 +69,43 @@ export const Login = async (
     expiresIn: "24h",
   });
   return response.status(200).json({ token });
+};
+
+export const UpdateProfile = async (
+  request: ExpressRequest<IUpdateProfileBody>,
+  response: Response
+) => {
+  const user = await prismaClient.user.findFirst({
+    where: { id: request.user.id },
+    select: {
+      id: true,
+    },
+  });
+  if (!user) {
+    return response.status(400).json({ message: "UnAuthorization" });
+  }
+  const updateUser = await prismaClient.user.update({
+    where: { id: user.id },
+    data: request.body,
+    select: { id: true, role: true },
+  });
+  const token = await jsonwebtoken.sign(
+    { user: updateUser },
+    process.env.SECRET_KEY,
+    { expiresIn: "24h" }
+  );
+  return response.status(200).json({ token });
+};
+
+export const getUserProfile = async (
+  request: ExpressRequest,
+  response: Response
+) => {
+  const user = await prismaClient.user.findFirst({
+    where: {
+      id: request.user.id,
+    },
+  });
+  delete user.password;
+  return response.status(200).json({ user });
 };
