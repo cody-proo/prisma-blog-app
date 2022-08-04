@@ -105,6 +105,9 @@ export const getUserProfile = async (
     where: {
       id: request.user.id,
     },
+    include: {
+      blogs: {},
+    },
   });
   delete user.password;
   return response.status(200).json({ user });
