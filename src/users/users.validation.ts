@@ -18,7 +18,7 @@ export const SignupValidation = () => {
       .pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/)
       .messages({
         "string.min": "Your Password Must At Least 8 Character",
-        "any.pattern":
+        "string.pattern.base":
           "Your Password Must Contains At Least 1 Character And 1 Number",
         "any.required": "Your Password Must Be Fill",
       }),
