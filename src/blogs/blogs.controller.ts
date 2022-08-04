@@ -33,7 +33,9 @@ export const createBlog = async (
 };
 
 export const getBlogs = async (request: ExpressRequest, response: Response) => {
-  const blogs = await prismaClient.blog.findMany({ include: { creator: {} } });
+  const blogs = await prismaClient.blog.findMany({
+    include: { creator: true, comments: true },
+  });
   return response.json({ blogs });
 };
 
@@ -44,7 +46,7 @@ export const getSingleBlog = async (
   const blogId: string = request.params.id;
   const blog = await prismaClient.blog.findUnique({
     where: { id: blogId },
-    include: { creator: {} },
+    include: { creator: true, comments: true },
   });
   if (!blog) {
     return response.status(404).json({ message: "Not Found" });
@@ -81,7 +83,7 @@ export const updateBlog = async (
     where: { id: blogId },
     data: request.body,
     include: {
-      creator: {},
+      creator: true,
     },
   });
   if (!updatedDocument) {

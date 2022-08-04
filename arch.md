@@ -1,0 +1,1 @@
+You Can Use Class And Create Instance For Prisma Client And Put Controller In it 
