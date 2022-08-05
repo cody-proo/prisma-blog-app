@@ -1,12 +1,7 @@
 import * as express from "express";
 import { AuthMiddleware } from "../auth";
 import { validation } from "../validation";
-import {
-  getUserProfile,
-  Login,
-  Signup,
-  UpdateProfile,
-} from "./users.controller";
+import { UsersController } from "./users.controller";
 import {
   LoginValidation,
   SignupValidation,
@@ -14,18 +9,23 @@ import {
 } from "./users.validation";
 
 const userRouter = express.Router();
+const controller = new UsersController();
 
-userRouter.post("/signup", validation(SignupValidation()), Signup);
+userRouter.post(
+  "/signup",
+  validation(SignupValidation()),
+  controller.signupUser
+);
 
-userRouter.post("/login", validation(LoginValidation()), Login);
+userRouter.post("/login", validation(LoginValidation()), controller.loginUser);
 
 userRouter.patch(
   "/profile",
   AuthMiddleware,
   validation(UpdateProfileValidation()),
-  UpdateProfile
+  controller.updateProfile
 );
 
-userRouter.get("/profile", AuthMiddleware, getUserProfile);
+userRouter.get("/profile", AuthMiddleware, controller.getUserProfile);
 
 export default userRouter;

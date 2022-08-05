@@ -1,14 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { Response } from "express";
+import { BaseController } from "../controller.base";
 import { ExpressRequest } from "../request";
 import { ICreateBlogBody, IUpdateBlogBody } from "./blogs.type";
 
-export class BlogsController {
-  private client: PrismaClient;
-  constructor() {
-    this.client = new PrismaClient();
-  }
-
+export class BlogsController extends BaseController {
   createBlog = async (
     request: ExpressRequest<ICreateBlogBody>,
     response: Response
