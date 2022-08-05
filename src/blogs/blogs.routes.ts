@@ -1,23 +1,19 @@
 import * as express from "express";
 import { AdminRole, AuthMiddleware } from "../auth";
 import { validation } from "../validation";
-import {
-  createBlog,
-  deleteBlog,
-  getBlogs,
-  getSingleBlog,
-  updateBlog,
-} from "./blogs.controller";
+import { BlogsController } from "./blogs.controller";
 import { createBlogValidation, updateBlogValidation } from "./blogs.validation";
 
 const blogsRouter = express.Router();
+
+const controller = new BlogsController();
 
 blogsRouter.post(
   "/create",
   AuthMiddleware,
   AdminRole,
   validation(createBlogValidation()),
-  createBlog
+  controller.createBlog
 );
 
 blogsRouter.patch(
@@ -25,11 +21,11 @@ blogsRouter.patch(
   AuthMiddleware,
   AdminRole,
   validation(updateBlogValidation()),
-  updateBlog
+  controller.updateBlog
 );
 
-blogsRouter.get("/:id", AuthMiddleware, getSingleBlog);
-blogsRouter.delete("/:id", AuthMiddleware, deleteBlog);
-blogsRouter.get("/", AuthMiddleware, getBlogs);
+blogsRouter.get("/:id", AuthMiddleware, controller.getSingleBlog);
+blogsRouter.delete("/:id", AuthMiddleware, controller.deleteBlog);
+blogsRouter.get("/", AuthMiddleware, controller.getBlogs);
 
 export default blogsRouter;

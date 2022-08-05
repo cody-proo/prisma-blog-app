@@ -1,24 +1,26 @@
 import * as express from "express";
 import { AdminRole, AuthMiddleware } from "../auth";
 import { validation } from "../validation";
-import {
-  createComment,
-  deleteComment,
-  getAllComments,
-} from "./comments.controller";
+import { CommentsController } from "./comments.controller";
 import { createCommentValidation } from "./comments.validation";
 
 const commonRouter = express.Router();
+const controller = new CommentsController();
 
-commonRouter.get("/:blog", AuthMiddleware, AdminRole, getAllComments);
+commonRouter.get(
+  "/:blog",
+  AuthMiddleware,
+  AdminRole,
+  controller.getAllComments
+);
 
 commonRouter.post(
   "/:blog",
   AuthMiddleware,
   validation(createCommentValidation()),
-  createComment
+  controller.createComment
 );
 
-commonRouter.delete("/:id", AuthMiddleware, deleteComment);
+commonRouter.delete("/:id", AuthMiddleware, controller.deleteComment);
 
 export default commonRouter;
